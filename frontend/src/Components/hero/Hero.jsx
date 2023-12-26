@@ -15,8 +15,8 @@ import "swiper/css/pagination";
 import "./Swiper.css";
 import IconSection from "./IconSection";
 const myslider = [
-  { text: "MEN", link: "src/Components/images/banner-15.jpg" },
-  { text: "WOMEN", link: "src/Components/images/banner-25.jpg" },
+  { text: "MEN", link: "./images/banner-15.jpg" },
+  { text: "WOMEN", link: "./images/banner-25.jpg" },
 ];
 export default function Hero() {
   const theme = useTheme();
@@ -114,7 +114,7 @@ export default function Hero() {
           <Box position={"relative"}>
             <img
               width={"100%"}
-              src="src/Components/images/banner-17.jpg"
+              src="./images/banner-17.jpg"
               alt=""
             />
             <Stack
@@ -174,7 +174,7 @@ export default function Hero() {
           <Box position={"relative"}>
             <img
               width={"100%"}
-              src="src/Components/images/banner-16.jpg"
+              src="./images/banner-16.jpg"
               alt=""
             />
             <Stack

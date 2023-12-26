@@ -4,6 +4,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   Container,
   Dialog,
   IconButton,
@@ -20,10 +21,13 @@ import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutl
 import { Close } from "@mui/icons-material";
 import ProductDetails from "./ProductDetails";
 import { useGetProductByNameQuery } from "../../redux/Product";
+import { motion, spring } from "framer-motion";
 
 export default function Main() {
   const handleAlignment = (event, newValue) => {
-    setmyData(newValue);
+    if (newValue !== null) {
+      setmyData(newValue);
+    }
   };
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -44,14 +48,21 @@ export default function Main() {
   const [myData, setmyData] = useState(allProductsApi);
 
   const { data, error, isLoading } = useGetProductByNameQuery(myData);
-  if (data) {
-    console.log(data.data);
-  }
+  const [clickProduct, setclickProduct] = useState({});
+
   if (isLoading) {
-    return <Typography variant="h6">LOADING.....................</Typography>;
+    return (
+      <Box sx={{ py: 11, textAlign: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
   }
   if (error) {
-    return <Typography variant="h6">{error.message}</Typography>;
+    return (
+      <Container>
+        <Typography variant="h6">{error.error}</Typography>
+      </Container>
+    );
   }
 
   if (data) {
@@ -124,6 +135,11 @@ export default function Main() {
           {data.data.map((item) => {
             return (
               <Card
+                component={motion.section}
+                layout
+                initial={{ transform: "scale(0)" }}
+                animate={{ transform: "scale(1)" }}
+                transition={{ duration: 1.2, stiffness:50, type: spring }}
                 key={item.id}
                 sx={{
                   maxWidth: 333,
@@ -158,7 +174,13 @@ export default function Main() {
                   </Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "space-between" }}>
-                  <Button onClick={handleClickOpen} size="large">
+                  <Button
+                    onClick={() => {
+                      handleClickOpen();
+                      setclickProduct(item);
+                    }}
+                    size="large"
+                  >
                     <AddShoppingCartOutlinedIcon
                       sx={{ mr: 1, textTransform: "capitalize" }}
                       fontSize="small"
@@ -195,7 +217,7 @@ export default function Main() {
           >
             <Close />
           </IconButton>
-          <ProductDetails />
+          <ProductDetails clickProduct={clickProduct} />
         </Dialog>
       </Container>
     );
